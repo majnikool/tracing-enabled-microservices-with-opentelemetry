@@ -62,7 +62,7 @@ RUN pip install --no-index --find-links=/root/wheels /root/wheels/* && \
 COPY src/example/static/ ./static/
 COPY src/example/templates ./templates/
 
-# Copy the application code
+# Copy the application codes
 COPY src/example /app
 
 # Copy startup script and make it executable
