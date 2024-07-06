@@ -1,0 +1,40 @@
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Distribution packages
+dist/
+
+# Egg metadata
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+
+# Docker-related files
+docker/nginx/docker-compose-nginx.conf
+source_code/docker/database.conf
+
+# Editor-specific files
+.vscode/
+.idea/
+*.swp
+
+# Log files
+loggin-templates/flow-output.yaml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# OS specific files
+ntuser.dat*
+Icon?
+
+# Specific to this project
+.github/workflows/*.yaml  # Ignore specific GitHub Actions workflows if needed
+
+# Generic ignores for Python projects
+env/
+pip-wheel-metadata/

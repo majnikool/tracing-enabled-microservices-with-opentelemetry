@@ -1,0 +1,83 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "test-app.fullname" . }}-data-processor
+  labels:
+    {{- include "test-app.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.dataProcessor.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "test-app.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      instrumentation.opentelemetry.io/inject-python: "true"
+      {{- end }}
+      labels:
+        {{- include "test-app.selectorLabels" . | nindent 8 }}
+        app: test-app-data-processor
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "test-app.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}-data-processor
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.registry.host }}/{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: SERVICE
+              value: "data_processor"
+            - name: ENABLE_TRACING
+              value: "{{ .Values.tracing.enabled }}"
+            - name: OTLP_ENDPOINT
+              value: "{{ .Values.tracing.otlpEndpoint }}"
+            - name: MONGO_USER
+              value: "{{ .Values.mongodb.user }}"
+            - name: MONGO_PASSWORD
+              value: {{ .Values.mongodb.password }}
+            - name: MONGO_DB
+              value: "{{ .Values.mongodb.db }}"
+            - name: MONGO_HOST
+              value: "{{ .Values.mongodb.host }}"
+            - name: MONGO_PORT
+              value: "{{ .Values.mongodb.port }}"
+            - name: KAFKA_BROKER
+              value: "{{ .Values.kafka.broker }}"
+          livenessProbe:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - "ps -ef | grep 'python /app/data_processor.py' | grep -v grep"
+          readinessProbe:
+            exec:
+              command:
+                - "sh"
+                - "-c"
+                - "ps -ef | grep 'python /app/data_processor.py' | grep -v grep"
+          resources:
+            {{- toYaml .Values.dataProcessor.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

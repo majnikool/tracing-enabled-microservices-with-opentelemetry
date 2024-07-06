@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "test-app.fullname" . }}-api-gateway
+  labels:
+    {{- include "test-app.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: test-app-api-gateway
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "test-app.fullname" . }}-data-processor
+  labels:
+    {{- include "test-app.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9092
+      protocol: TCP
+      name: kafka
+  selector:
+    app: test-app-data-processor

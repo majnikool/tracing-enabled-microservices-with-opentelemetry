@@ -1,0 +1,75 @@
+replicaCount: 1
+
+
+image:
+  repository: majidni/test-app
+  pullPolicy: IfNotPresent
+  tag: "test-majid-493-gf3d94b8"
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+securityContext: {}
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: true
+  className: ""
+  host: testapp.mydomain.com
+  path: /
+  pathType: ImplementationSpecific
+  tls:
+    enabled: true
+    secret: ""
+
+resources: {}
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+tracing:
+  enabled: "true"
+  otlpEndpoint: "otel-collector-collector.tracing.svc.cluster.local:4317"
+
+apiGateway:
+  replicaCount: 1
+
+dataProcessor:
+  replicaCount: 1
+
+kafka:
+  broker: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+
+redis:
+  host: "my-redis-master.redis.svc.cluster.local"
+  port: 6379
+  password: "Test@Redis"
+
+mongodb:
+  user: "testapp"
+  db: "testapp"
+  host: "mongodb-7-1718019041.mongodb.svc.cluster.local"
+  port: "27017"
+  password: "testapp"

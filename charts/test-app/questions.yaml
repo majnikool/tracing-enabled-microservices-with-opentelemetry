@@ -1,0 +1,122 @@
+questions:
+  # Image Registry
+  - variable: registry.host
+    label: Registry hostname
+    description: Hostname of the registry
+    type: string
+    required: true
+    group: Image Registry
+
+  - variable: replicaCount
+    description: "Number of app replicas"
+    type: int
+    required: true
+    label: Replica Count
+    default: 1
+    group: App Configurations  
+
+  - variable: ingress.host
+    description: "Ingress URL for application endpoint"
+    type: string
+    required: true
+    label: Ingress Host
+    group: App Configurations
+
+  - variable: tracing.enabled
+    description: "Enable or disable OpenTelemetry tracing"
+    type: boolean
+    required: false
+    label: Enable Tracing
+    default: false
+    group: Tracing Configuration
+
+  - variable: tracing.otlpEndpoint
+    description: "OTLP endpoint for OpenTelemetry collector"
+    type: string
+    required: false
+    label: OTLP Endpoint
+    default: "otel-collector-collector.tracing.svc.cluster.local:4317"
+    group: Tracing Configuration
+
+  # Kafka Configuration
+  - variable: kafka.broker
+    description: "Kafka broker endpoint"
+    type: string
+    required: true
+    label: Kafka Broker
+    default: "my-cluster-kafka-bootstrap.kafka.svc.cluster.local:9092"
+    group: Kafka Configuration
+
+  # Redis Configuration
+  - variable: redis.host
+    description: "Redis host"
+    type: string
+    required: true
+    label: Redis Host
+    default: "my-redis-master.redis.svc.cluster.local"
+    group: Redis Configuration
+
+  - variable: redis.port
+    description: "Redis port"
+    type: int
+    required: true
+    label: Redis Port
+    default: 6379
+    group: Redis Configuration
+
+  - variable: redis.password
+    description: "Redis password"
+    type: password
+    required: false
+    label: Redis Password
+    default: "Test@Redis"
+    group: Redis Configuration
+
+  # MongoDB Configuration
+  - variable: mongodb.user
+    description: "MongoDB user"
+    type: string
+    required: true
+    label: MongoDB User
+    default: "testapp"
+    group: MongoDB Configuration
+
+  - variable: mongodb.db
+    description: "MongoDB database name"
+    type: string
+    required: true
+    label: MongoDB Database
+    default: "testapp"
+    group: MongoDB Configuration
+
+  - variable: mongodb.host
+    description: "MongoDB host"
+    type: string
+    required: true
+    label: MongoDB Host
+    default: "mongodb-7-1718019041.mongodb.svc.cluster.local"
+    group: MongoDB Configuration
+
+  - variable: mongodb.port
+    description: "MongoDB port"
+    type: int
+    required: true
+    label: MongoDB Port
+    default: 27017
+    group: MongoDB Configuration
+
+  - variable: mongodb.secretName
+    description: "Name of the Kubernetes secret containing the MongoDB password"
+    type: string
+    required: true
+    label: MongoDB Secret Name
+    default: "mongodb-7-1718019041"
+    group: MongoDB Configuration
+
+  - variable: mongodb.passwordKey
+    description: "Key in the Kubernetes secret for the MongoDB password"
+    type: string
+    required: true
+    label: MongoDB Password Key
+    default: "mongodb-password"
+    group: MongoDB Configuration

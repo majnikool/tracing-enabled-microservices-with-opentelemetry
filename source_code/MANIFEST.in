@@ -1,0 +1,2 @@
+include src/example/templates/*
+recursive-include src/example/static *
