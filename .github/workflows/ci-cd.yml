@@ -29,6 +29,7 @@ jobs:
       id: check_changes
       run: |
         CHANGES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '^source_code/' || true)
+        echo "CHANGES=$CHANGES"
         echo "CHANGES_IN_SOURCE=$CHANGES" >> $GITHUB_ENV
         echo "changes=$CHANGES" >> $GITHUB_OUTPUT
 
