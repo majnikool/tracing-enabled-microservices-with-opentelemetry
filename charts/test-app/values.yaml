@@ -4,7 +4,7 @@ replicaCount: 1
 image:
   repository: majidni/tracing-demo-app
   pullPolicy: IfNotPresent
-  tag: "a0f448715973f296a040e7e8109880ed99233efc"
+  tag: "0e3fa54f67fa2ba430d4bbcc343d01f56d7de0e9"
 
 imagePullSecrets: []
 nameOverride: ""
