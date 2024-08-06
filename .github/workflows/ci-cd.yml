@@ -24,6 +24,11 @@ jobs:
       with:
         python-version: '3.x'
 
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools wheel
+
     - name: Check for Changes
       id: check_changes
       run: |
@@ -35,7 +40,7 @@ jobs:
       if: env.CHANGES_IN_SOURCE != ''
       run: |
         cd source_code
-        python setup.py sdist
+        python setup.py sdist bdist_wheel
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
