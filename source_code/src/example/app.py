@@ -316,7 +316,7 @@ def run_health_checks():
     if kafka_status:
         logger.info("Kafka health check passed.")
     else:
-        logger.error("Kafka health check failed.")
+        logger.error("Kafka health check failed")
 
     if redis_status and kafka_status:
         ensure_kafka_topics()
