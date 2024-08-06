@@ -134,6 +134,8 @@ def get_data_from_redis(entered_id):
     return data
 
 def cache_data_in_redis(entered_id, data):
+    if '_id' in data:
+        data['id'] = data.pop('_id')
     redis_client.set(entered_id, json.dumps(data))
     logger.info(f"Redis set for ID {entered_id}: {data}")
 
@@ -239,7 +241,6 @@ async def get_item(entered_id: int):
         if cached_data:
             logger.info(f"Found cached data for ID {entered_id}")
             data = json.loads(cached_data)
-            data['id'] = data.pop('_id')  # Transform _id to id
             return data
 
         logger.info(f"Cached data not found for ID {entered_id}. Sending message to Kafka.")
@@ -251,8 +252,6 @@ async def get_item(entered_id: int):
             logger.info(f"Received data from Kafka for ID {entered_id}. Caching the data.")
             cache_data_in_redis(entered_id, data)
 
-            if '_id' in data:
-                data['id'] = data.pop('_id')  # Transform _id to id
             return data
 
         raise HTTPException(status_code=404, detail=f"Could not find data with ID {entered_id}")
@@ -271,8 +270,6 @@ async def put_item(entered_id: int, item: BaseItem):
     if result:
         if 'error' in result:
             raise HTTPException(status_code=400, detail=result['error'])
-        if '_id' in result:
-            result['id'] = result.pop('_id')  # Transform _id to id
         return result
     raise HTTPException(status_code=404, detail=f"Could not find data with ID {entered_id}")
 
@@ -290,8 +287,6 @@ async def patch_item(entered_id: int, item: BaseItem):
     if result:
         if 'error' in result:
             raise HTTPException(status_code=400, detail=result['error'])
-        if '_id' in result:
-            result['id'] = result.pop('_id')  # Transform _id to id
         return result
     raise HTTPException(status_code=404, detail=f"Could not find data with ID {entered_id}")
 
