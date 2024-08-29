@@ -1,0 +1,14 @@
+# values.yaml
+global:
+  redis:
+    password: "Test@Redis"
+
+usePassword: true
+master:
+  persistence:
+    enabled: true
+    size: 8Gi
+slave:
+  persistence:
+    enabled: true
+    size: 8Gi
