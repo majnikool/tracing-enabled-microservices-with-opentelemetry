@@ -23,6 +23,9 @@ The primary goal of this application is to test and demonstrate effective tracin
 - MongoDB
 - Redis
 
+You can refer to the requirements folder for example deployments of Kafka, Mongo, and Redis.
+
+
 ## Deployment
 
 This application can be deployed using Helm. A Helm chart is available in the `charts` directory of this repository.
