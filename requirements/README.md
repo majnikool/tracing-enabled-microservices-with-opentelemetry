@@ -1,4 +1,3 @@
-```markdown
 # Deployment Guide: Kafka, Redis, and MongoDB
 
 This guide provides step-by-step instructions to deploy Kafka using Strimzi, Redis from Bitnami, and MongoDB from Bitnami in a Kubernetes environment.
