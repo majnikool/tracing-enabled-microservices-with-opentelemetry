@@ -1,0 +1,60 @@
+global:
+  dnsService: "rke2-coredns-rke2-coredns"
+  clusterDomain: 'cluster.local'
+  image:
+    # -- Overrides the Docker registry globally for all images, excluding enterprise.
+    registry: docker.io
+gateway:
+  enabled: true
+minio:
+  enabled: false
+
+metricsGenerator:
+  enabled: true
+  registry:
+    external_labels:
+      source: tempo
+  config:
+    storage:
+      remote_write:
+       - url: http://rancher-monitoring-prometheus.cattle-monitoring-system.svc.cluster.local:9090/api/v1/write
+         send_exemplars: true
+global_overrides:
+  metrics_generator_processors: [service-graphs, span-metrics]
+
+storage:
+  trace:
+    backend: s3
+    s3:
+      tls_insecure_skip_verify: true
+      access_key: '1qvGe6FZzmCGFk2dhMJY'
+      secret_key: 'svGrgOagvKtxKTjcJukBVP7sZVGH337dhZE5ZsNm'
+      bucket: 'tempo'
+      endpoint: 'myminio-hl.minio-tenant.svc.cluster.local:9000'
+      
+      
+      
+traces:
+  otlp:
+    http:
+      enabled: true
+    grpc:
+      enabled: true
+    zipkin:
+      enabled: false
+    jaeger:
+      thriftHttp:
+        enabled: false
+    opencensus:
+      enabled: false      
+
+metaMonitoring:
+  serviceMonitor:
+    enabled: true
+    labels:
+      prometheus: system
+
+distributor:
+  config:
+    log_received_spans:
+      enabled: true

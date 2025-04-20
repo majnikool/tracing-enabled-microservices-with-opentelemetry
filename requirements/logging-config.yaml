@@ -1,0 +1,52 @@
+kubectl apply -f - --namespace=test-app <<"EOF"
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: Flow
+metadata:
+  name: api-gw-flow
+  namespace: test-app
+spec:
+  filters:
+    - tag_normaliser: {}
+  globalOutputRefs: []
+  localOutputRefs:
+    - test-app-output
+  match:
+    - select:
+        labels:
+          app: test-app-api-gateway
+EOF
+
+kubectl apply -f - --namespace=test-app <<"EOF"
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: Flow
+metadata:
+  name: data-processor-flow
+  namespace: test-app
+spec:
+  filters:
+    - tag_normaliser: {}
+  globalOutputRefs: []
+  localOutputRefs:
+    - test-app-output
+  match:
+    - select:
+        labels:
+          app: test-app-data-processor
+EOF
+
+kubectl apply -f - --namespace=test-app <<"EOF"
+apiVersion: logging.banzaicloud.io/v1beta1
+kind: Output
+metadata:
+  name: test-app-output
+  namespace: test-app
+spec:
+  loki:
+    buffer:
+      chunk_limit_size: 2MB
+      flush_interval: 3s
+      flush_mode: interval
+      queue_limit_length: 1024
+    configure_kubernetes_labels: true
+    url: http://loki-gateway.loki.svc.cluster.local
+EOF

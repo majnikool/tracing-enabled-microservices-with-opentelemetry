@@ -61,13 +61,13 @@ The API Gateway exposes the following endpoints:
    ```
    curl -k -XPUT -H "Content-type: application/json" -d \
    '{"name": "backuptest", "price": 67676, "year": "2022"}' \
-   'https://app.domain.com/myapi/10'
+   'https://app.majtest.uk/myapi/15'
    ```
 
 2. Retrieve a car:
    ```
    curl -k -XGET -H "Content-type: application/json"  \
-   'https://app.domain.com/myapi/10'
+   'https://app.majtest.uk/myapi/10'
    ```
 
 ## Monitoring and Tracing

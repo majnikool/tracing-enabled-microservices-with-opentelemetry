@@ -1,0 +1,29 @@
+replicaCount: 1
+
+image:
+  registry: docker.io
+  repository: mongo
+  tag: 6.0.4-focal-arm64
+  pullPolicy: IfNotPresent
+
+auth:
+  enabled: true
+  rootUser: root
+  rootPassword: "testapp"
+  usernames: ["testapp"]
+  passwords: ["testapp"]
+  databases: ["testapp"]
+
+tls:
+  enabled: false
+
+persistence:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 2Gi
+  mountPath: /data/db
+
+service:
+  port: 27017
+  type: ClusterIP

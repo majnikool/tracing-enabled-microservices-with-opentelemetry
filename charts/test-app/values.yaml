@@ -6,6 +6,10 @@ image:
   pullPolicy: IfNotPresent
   tag: "0e3fa54f67fa2ba430d4bbcc343d01f56d7de0e9"
 
+registry:
+  host: "docker.io"
+
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -28,7 +32,7 @@ service:
 ingress:
   enabled: true
   className: ""
-  host: testapp.mydomain.com
+  host: app.majtest.uk
   path: /
   pathType: ImplementationSpecific
   tls:
@@ -70,6 +74,6 @@ redis:
 mongodb:
   user: "testapp"
   db: "testapp"
-  host: "mongodb-7-1718019041.mongodb.svc.cluster.local"
+  host: "mongodb-arm.mongodb.svc.cluster.local"
   port: "27017"
   password: "testapp"

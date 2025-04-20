@@ -1,14 +1,10 @@
-# values.yaml
 global:
   redis:
     password: "Test@Redis"
 
 usePassword: true
+architecture: standalone  # This ensures only one master, no replicas
 master:
   persistence:
     enabled: true
-    size: 8Gi
-slave:
-  persistence:
-    enabled: true
-    size: 8Gi
+    size: 2Gi

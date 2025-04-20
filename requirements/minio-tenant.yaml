@@ -1,0 +1,63 @@
+# Create the Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: minio-tenant
+---
+# Secret for MinIO Configuration
+apiVersion: v1
+kind: Secret
+metadata:
+  name: storage-configuration
+  namespace: minio-tenant
+stringData:
+  config.env: |-
+    export MINIO_ROOT_USER="minio"
+    export MINIO_ROOT_PASSWORD="minio123"
+    export MINIO_BROWSER="on"
+type: Opaque
+---
+# Secret for MinIO Console Access
+apiVersion: v1
+data:
+  CONSOLE_ACCESS_KEY: Y29uc29sZQ==  # base64 of 'console'
+  CONSOLE_SECRET_KEY: Y29uc29sZTEyMw==  # base64 of 'console123'
+kind: Secret
+metadata:
+  name: storage-user
+  namespace: minio-tenant
+type: Opaque
+---
+# MinIO Tenant Definition
+apiVersion: minio.min.io/v2
+kind: Tenant
+metadata:
+  annotations:
+    prometheus.io/path: /minio/v2/metrics/cluster
+    prometheus.io/port: "9000"
+    prometheus.io/scrape: "true"
+  labels:
+    app: minio
+  name: myminio
+  namespace: minio-tenant
+spec:
+  certConfig: {}
+  configuration:
+    name: storage-configuration
+  image: quay.io/minio/minio:RELEASE.2024-10-02T17-50-41Z
+  mountPath: /export
+  podManagementPolicy: Parallel
+  pools:
+    - name: pool-0
+      servers: 1
+      volumesPerServer: 1
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+          - ReadWriteOnce
+          resources:
+            requests:
+              storage: 8Gi
+  requestAutoCert: true
+  users:
+    - name: storage-user

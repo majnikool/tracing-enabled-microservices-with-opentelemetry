@@ -1,5 +1,5 @@
-# Use Python 3.9 Debian Buster image as the base image
-FROM python:3.9-slim-buster as base
+# Use Python 3.9 Debian Bullseye image as the base image
+FROM python:3.9-slim-bullseye as base
 
 # Install system dependencies for building Python packages
 RUN apt-get update && apt-get install -y \
@@ -22,8 +22,8 @@ RUN pip install --upgrade pip wheel
 # Use pip to build wheels for cryptography
 RUN pip wheel --wheel-dir=/root/wheels cryptography
 
-# Start a new stage from the Python 3.9 Debian image
-FROM python:3.9-slim-buster as release
+# Start a new stage from the Python 3.9 Debian Bullseye image
+FROM python:3.9-slim-bullseye as release
 
 # Ensure we are running as root for installations
 USER root
